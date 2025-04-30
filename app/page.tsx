@@ -21,10 +21,10 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         // In a real app, these would be actual API calls
-        const balanceResponse = await fetch("/api/balance");
+        const balanceResponse = await fetch("/api/balance.php");
         const balanceData = await balanceResponse.json();
         setBalance(balanceData.balance);
-        const transactionsResponse = await fetch("/api/transactions");
+        const transactionsResponse = await fetch("/api/transactions.php");
         const transactionsData = await transactionsResponse.json();
         setTransactions(transactionsData);
       } catch (error) {
@@ -45,7 +45,7 @@ export default function Dashboard() {
   const showWithdraw = () => setOpenWithdraw(true);
 
   const onDeposit: DepositModalProps["onDeposit"] = async (detail) => {
-    const depositResponse = await fetch("/api/deposit", {
+    const depositResponse = await fetch("/api/deposit.php", {
       method: "POST",
       body: JSON.stringify(detail),
       headers: {
@@ -63,7 +63,7 @@ export default function Dashboard() {
   };
 
   const onWithdraw: PaymentModalProps["onWithraw"] = async (detail) => {
-    const withdrawResponse = await fetch("/api/withdraw", {
+    const withdrawResponse = await fetch("/api/withdraw.php", {
       method: "POST",
       body: JSON.stringify(detail),
       headers: {
