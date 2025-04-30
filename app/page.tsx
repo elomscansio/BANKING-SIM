@@ -6,8 +6,8 @@ import TransactionList from "@/components/transaction-list";
 import BalanceCard from "@/components/balance-card";
 import ActionButtons from "@/components/action-buttons";
 import { Bell, LogOut } from "lucide-react";
-import DepositModal from "@/components/deposit-modal";
-import PaymentModal from "@/components/payment-modal";
+import DepositModal, { DepositModalProps } from "@/components/deposit-modal";
+import PaymentModal, { PaymentModalProps } from "@/components/payment-modal";
 
 export default function Dashboard() {
   const [balance, setBalance] = useState(1250.75);
@@ -78,11 +78,13 @@ export default function Dashboard() {
   const closewithdraw = () => setOpenWithdraw(false);
   const showWithdraw = () => setOpenWithdraw(true);
 
-  const onDeposit = async () => {
+  const onDeposit: DepositModalProps["onDeposit"] = async (detail) => {
+    const balanceResponse = await fetch("/api/balance");
     alert("Deposited");
   };
 
-  const onWithdraw = async () => {
+  const onWithdraw: PaymentModalProps["onWithraw"] = async (detail) => {
+    const balanceResponse = await fetch("/api/balance");
     alert("Withdrawal success");
   };
 

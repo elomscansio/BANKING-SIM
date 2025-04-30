@@ -14,14 +14,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-interface DepositModalProps {
+export interface DepositModalProps {
   isOpen: boolean;
   onClose: () => void;
   onDeposit: (detail: {
     amount: number;
     sender: string;
     description: string;
-    date: Date;
+    date: string;
   }) => void;
 }
 
@@ -33,7 +33,7 @@ export default function DepositModal({
   const [amount, setAmount] = useState("");
   const [sender, setSender] = useState("");
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -65,7 +65,7 @@ export default function DepositModal({
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
+            <div className="grid gap-2 my-2">
               <Label htmlFor="amount">Amount</Label>
               <Input
                 id="amount"
@@ -79,8 +79,41 @@ export default function DepositModal({
               {error && <p className="text-sm text-red-500">{error}</p>}
             </div>
           </div>
+          <div className="grid gap-2 my-2">
+            <Label htmlFor="recipient">Sender</Label>
+            <Input
+              id="sender"
+              placeholder="Enter Sender's Name"
+              value={sender}
+              onChange={(e) => setSender(e.target.value)}
+            />
+          </div>
+          <div className="grid gap-2 my-2">
+            <Label htmlFor="description">Description</Label>
+            <Input
+              id="description"
+              placeholder="Enter Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+          <div className="grid gap-2 my-2">
+            <Label htmlFor="date">Date</Label>
+            <Input
+              id="date"
+              type="date"
+              placeholder="Enter Date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
+            <Button
+              type="button"
+              variant="outline"
+              className="my-2"
+              onClick={onClose}
+            >
               Cancel
             </Button>
             <Button type="submit">Deposit</Button>

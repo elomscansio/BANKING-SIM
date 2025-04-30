@@ -14,14 +14,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-interface PaymentModalProps {
+export interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
   onWithraw: (detail: {
     amount: number;
     recipient: string;
     description: string;
-    date: Date;
+    date: string;
   }) => void;
   currentBalance: number;
 }
@@ -35,7 +35,7 @@ export default function PaymentModal({
   const [amount, setAmount] = useState("");
   const [recipient, setRecipient] = useState("");
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState("");
 
   const [error, setError] = useState("");
 
@@ -81,7 +81,7 @@ export default function PaymentModal({
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
+            <div className="grid gap-2 my-2">
               <Label htmlFor="amount">Amount</Label>
               <Input
                 id="amount"
@@ -94,18 +94,42 @@ export default function PaymentModal({
               />
               {error && <p className="text-sm text-red-500">{error}</p>}
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 my-2">
               <Label htmlFor="recipient">Recipient</Label>
               <Input
                 id="recipient"
-                placeholder="Enter recipient name"
+                placeholder="Enter Recipient Name"
                 value={recipient}
                 onChange={(e) => setRecipient(e.target.value)}
               />
             </div>
+            <div className="grid gap-2 my-2">
+              <Label htmlFor="description">Description</Label>
+              <Input
+                id="description"
+                placeholder="Enter Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2 my-2">
+              <Label htmlFor="date">Date</Label>
+              <Input
+                id="date"
+                type="date"
+                placeholder="Enter Date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
+            <Button
+              type="button"
+              variant="outline"
+              className="my-2"
+              onClick={onClose}
+            >
               Cancel
             </Button>
             <Button type="submit">Pay</Button>
