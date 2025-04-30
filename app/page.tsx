@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { Card } from "@/components/ui/card";
 import TransactionList from "@/components/transaction-list";
 import BalanceCard from "@/components/balance-card";
@@ -8,46 +8,12 @@ import ActionButtons from "@/components/action-buttons";
 import { Bell, LogOut } from "lucide-react";
 import DepositModal, { DepositModalProps } from "@/components/deposit-modal";
 import PaymentModal, { PaymentModalProps } from "@/components/payment-modal";
+import { randomInt } from "crypto";
 
 export default function Dashboard() {
   const [balance, setBalance] = useState(1250.75);
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      type: "deposit",
-      amount: 500.0,
-      date: "2023-04-10",
-      description: "Salary deposit",
-    },
-    {
-      id: 2,
-      type: "withdrawal",
-      amount: 120.5,
-      date: "2023-04-08",
-      description: "Grocery shopping",
-    },
-    {
-      id: 3,
-      type: "deposit",
-      amount: 200.0,
-      date: "2023-04-05",
-      description: "Refund",
-    },
-    {
-      id: 4,
-      type: "withdrawal",
-      amount: 45.99,
-      date: "2023-04-03",
-      description: "Restaurant",
-    },
-    {
-      id: 5,
-      type: "withdrawal",
-      amount: 350.0,
-      date: "2023-04-01",
-      description: "Rent payment",
-    },
-  ]);
+  const [transactions, setTransactions] = useState([]);
+  const [reloaded, reload] = useReducer((prev) => randomInt(192), 0);
 
   // In a real app, we would fetch data from the backend
   useEffect(() => {
@@ -67,7 +33,7 @@ export default function Dashboard() {
     };
 
     fetchData();
-  }, []);
+  }, [reloaded]);
 
   const [openDeposit, setOpenDeposit] = useState(false);
   const [openWithdraw, setOpenWithdraw] = useState(false);
@@ -79,13 +45,40 @@ export default function Dashboard() {
   const showWithdraw = () => setOpenWithdraw(true);
 
   const onDeposit: DepositModalProps["onDeposit"] = async (detail) => {
-    const balanceResponse = await fetch("/api/balance");
-    alert("Deposited");
+    const depositResponse = await fetch("/api/deposit", {
+      method: "POST",
+      body: JSON.stringify(detail),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const { success, message, balance, error } = await depositResponse.json();
+
+    if (!error) {
+      reload();
+    }
+
+    alert(message);
   };
 
   const onWithdraw: PaymentModalProps["onWithraw"] = async (detail) => {
-    const balanceResponse = await fetch("/api/balance");
-    alert("Withdrawal success");
+    const withdrawResponse = await fetch("/api/withdraw", {
+      method: "POST",
+      body: JSON.stringify(detail),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const { success, message, balance, error } = await withdrawResponse.json();
+
+    if (!error) {
+      reload();
+    }
+    
+    alert(message);
+
   };
 
   return (

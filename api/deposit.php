@@ -9,6 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Get POST data
 $data = json_decode(file_get_contents('php://input'), true);
 $amount = isset($data['amount']) ? floatval($data['amount']) : 0;
+$sender = isset($data['sender']) ? ($data['sender']) : '';
+$description = isset($data['description']) ? ($data['description']) : '';
+$date = isset($data['date']) ? ($data['date']) : '';
 
 // Validate amount
 if ($amount <= 0) {
@@ -22,7 +25,7 @@ $userId = 1;
 try {
     // Start transaction
     $pdo->beginTransaction();
-    
+
     // Update account balance
     $stmt = $pdo->prepare("
         UPDATE accounts 
@@ -30,26 +33,32 @@ try {
         WHERE user_id = ?
     ");
     $stmt->execute([$amount, $userId]);
-    
+
     if ($stmt->rowCount() === 0) {
         throw new Exception('Account not found');
     }
-    
+
     // Add transaction record
     $stmt = $pdo->prepare("
-        INSERT INTO transactions (user_id, type, amount, date, description) 
-        VALUES (?, 'deposit', ?, NOW(), 'Deposit')
+        INSERT INTO transactions (user_id, type, amount, sender, description, date) 
+        VALUES (?, 'deposit', ?, ?, ?, ?)
     ");
-    $stmt->execute([$userId, $amount]);
-    
+    $stmt->execute([
+        $userId,
+        $amount,
+        $sender,
+        $description,
+        $date,
+    ]);
+
     // Get updated balance
     $stmt = $pdo->prepare("SELECT balance FROM accounts WHERE user_id = ?");
     $stmt->execute([$userId]);
     $account = $stmt->fetch();
-    
+
     // Commit transaction
     $pdo->commit();
-    
+
     jsonResponse([
         'success' => true,
         'message' => 'Deposit successful',
@@ -60,4 +69,3 @@ try {
     $pdo->rollBack();
     jsonResponse(['error' => $e->getMessage()], 500);
 }
-?>

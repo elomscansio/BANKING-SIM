@@ -8,8 +8,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Get POST data
 $data = json_decode(file_get_contents('php://input'), true);
-$recipient = isset($data['recipient']) ? trim($data['recipient']) : '';
 $amount = isset($data['amount']) ? floatval($data['amount']) : 0;
+$recipient = isset($data['recipient']) ? trim($data['recipient']) : '';
+$description = isset($data['description']) ? trim($data['description']) : '';
+$date = isset($data['date']) ? trim($data['date']) : '';
 
 // Validate data
 if (empty($recipient)) {
@@ -27,20 +29,20 @@ $userId = 1;
 try {
     // Start transaction
     $pdo->beginTransaction();
-    
+
     // Check if user has sufficient balance
     $stmt = $pdo->prepare("SELECT balance FROM accounts WHERE user_id = ?");
     $stmt->execute([$userId]);
     $account = $stmt->fetch();
-    
+
     if (!$account) {
         throw new Exception('Account not found');
     }
-    
+
     if (floatval($account['balance']) < $amount) {
         throw new Exception('Insufficient balance');
     }
-    
+
     // Update account balance
     $stmt = $pdo->prepare("
         UPDATE accounts 
@@ -48,22 +50,28 @@ try {
         WHERE user_id = ?
     ");
     $stmt->execute([$amount, $userId]);
-    
+
     // Add transaction record
     $stmt = $pdo->prepare("
-        INSERT INTO transactions (user_id, type, amount, date, description) 
-        VALUES (?, 'withdrawal', ?, NOW(), ?)
+        INSERT INTO transactions (user_id, type, amount, recipient, description, date) 
+        VALUES (?, 'withdrawal', ?, ?, ?, ?)
     ");
-    $stmt->execute([$userId, $amount, "Payment to $recipient"]);
-    
+    $stmt->execute([
+        $userId,
+        $amount,
+        $recipient,
+        $description,
+        $date,
+    ]);
+
     // Get updated balance
     $stmt = $pdo->prepare("SELECT balance FROM accounts WHERE user_id = ?");
     $stmt->execute([$userId]);
     $account = $stmt->fetch();
-    
+
     // Commit transaction
     $pdo->commit();
-    
+
     jsonResponse([
         'success' => true,
         'message' => 'Payment successful',
@@ -74,4 +82,3 @@ try {
     $pdo->rollBack();
     jsonResponse(['error' => $e->getMessage()], 500);
 }
-?>
