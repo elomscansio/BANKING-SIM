@@ -116,7 +116,9 @@ export default function DepositModal({
             >
               Cancel
             </Button>
-            <Button type="submit">Deposit</Button>
+            <Button className="my-2" type="submit">
+              Deposit
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -132,7 +132,7 @@ export default function PaymentModal({
             >
               Cancel
             </Button>
-            <Button type="submit">Pay</Button>
+            <Button className="my-2" type="submit">Pay</Button>
           </DialogFooter>
         </form>
       </DialogContent>
