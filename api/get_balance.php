@@ -1,9 +1,7 @@
 <?php
 require_once 'config.php';
 
-// In a real app, you would authenticate the user and get their ID
-// For this simulation, we'll use a hardcoded user ID
-$userId = 1;
+$userId = isset($_GET['user_id']) ? ($_GET['user_id']) : '';
 
 try {
     // Get user's balance

@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useUID } from "@/hooks/use-uid";
 
 export interface PaymentModalProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ export interface PaymentModalProps {
     amount: number;
     recipient: string;
     description: string;
+    user_id: string;
     date: string;
   }) => void;
   currentBalance: number;
@@ -36,7 +38,7 @@ export default function PaymentModal({
   const [recipient, setRecipient] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
-
+  const user_id = useUID();
   const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -64,6 +66,7 @@ export default function PaymentModal({
     onPay({
       amount: paymentAmount,
       recipient,
+      user_id,
       description,
       date,
     });
@@ -132,7 +135,9 @@ export default function PaymentModal({
             >
               Cancel
             </Button>
-            <Button className="my-2" type="submit">Pay</Button>
+            <Button className="my-2" type="submit">
+              Pay
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

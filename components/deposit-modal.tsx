@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useUID } from "@/hooks/use-uid";
 
 export interface DepositModalProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ export interface DepositModalProps {
     amount: number;
     sender: string;
     description: string;
+    user_id: string;
     date: string;
   }) => void;
 }
@@ -35,6 +37,7 @@ export default function DepositModal({
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [error, setError] = useState("");
+  const user_id = useUID();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +53,7 @@ export default function DepositModal({
       amount: depositAmount,
       sender,
       description,
+      user_id,
       date,
     });
     setAmount("");

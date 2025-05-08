@@ -8,12 +8,13 @@ import ActionButtons from "@/components/action-buttons";
 import { Bell, LogOut } from "lucide-react";
 import DepositModal, { DepositModalProps } from "@/components/deposit-modal";
 import PaymentModal, { PaymentModalProps } from "@/components/payment-modal";
-import { randomInt } from "crypto";
+import { generateRandomUID, useUID } from "@/hooks/use-uid";
 
 export default function Dashboard() {
   const [balance, setBalance] = useState(1250.75);
   const [transactions, setTransactions] = useState([]);
-  const [reloaded, reload] = useReducer((prev) => randomInt(192), 0);
+  const [reloaded, reload] = useReducer((prev) => generateRandomUID(), "");
+  const user_id = useUID();
 
   // In a real app, we would fetch data from the backend
   useEffect(() => {
@@ -21,10 +22,14 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         // In a real app, these would be actual API calls
-        const balanceResponse = await fetch("/api/balance.php");
+        const balanceResponse = await fetch(
+          `/api/get_balance.php?user_id=${user_id}`
+        );
         const balanceData = await balanceResponse.json();
         setBalance(balanceData.balance);
-        const transactionsResponse = await fetch("/api/transactions.php");
+        const transactionsResponse = await fetch(
+          `/api/get_transactions.php?user_id=${user_id}`
+        );
         const transactionsData = await transactionsResponse.json();
         setTransactions(transactionsData);
       } catch (error) {
@@ -76,9 +81,8 @@ export default function Dashboard() {
     if (!error) {
       reload();
     }
-    
-    alert(message);
 
+    alert(message);
   };
 
   return (

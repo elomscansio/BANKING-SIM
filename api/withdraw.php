@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $data = json_decode(file_get_contents('php://input'), true);
 $amount = isset($data['amount']) ? floatval($data['amount']) : 0;
 $recipient = isset($data['recipient']) ? trim($data['recipient']) : '';
+$userId = isset($data['user_id']) ? trim($data['user_id']) : '';
 $description = isset($data['description']) ? trim($data['description']) : '';
 $date = isset($data['date']) ? trim($data['date']) : '';
 
@@ -21,10 +22,6 @@ if (empty($recipient)) {
 if ($amount <= 0) {
     jsonResponse(['error' => 'Invalid amount'], 400);
 }
-
-// In a real app, you would authenticate the user and get their ID
-// For this simulation, we'll use a hardcoded user ID
-$userId = 1;
 
 try {
     // Start transaction
