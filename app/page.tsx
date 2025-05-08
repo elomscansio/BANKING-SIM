@@ -64,11 +64,9 @@ export default function Dashboard() {
 
     if (!error) {
       reload();
-      alert(error);
-      return;
     }
 
-    alert(message);
+    alert(error || message);
   };
 
   const onWithdraw: PaymentModalProps["onWithraw"] = async (detail) => {
@@ -84,11 +82,9 @@ export default function Dashboard() {
 
     if (!error) {
       reload();
-      alert(error);
-      return;
     }
 
-    alert(message);
+    alert(error || message);
   };
 
   return (
