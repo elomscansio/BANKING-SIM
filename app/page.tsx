@@ -20,6 +20,8 @@ export default function Dashboard() {
   useEffect(() => {
     // Simulating API call to fetch balance and transactions
     const fetchData = async () => {
+      if (!user_id) return;
+
       try {
         // In a real app, these would be actual API calls
         const balanceResponse = await fetch(
@@ -38,7 +40,7 @@ export default function Dashboard() {
     };
 
     fetchData();
-  }, [reloaded]);
+  }, [reloaded, user_id]);
 
   const [openDeposit, setOpenDeposit] = useState(false);
   const [openWithdraw, setOpenWithdraw] = useState(false);
@@ -62,6 +64,8 @@ export default function Dashboard() {
 
     if (!error) {
       reload();
+      alert(error);
+      return;
     }
 
     alert(message);
@@ -80,6 +84,8 @@ export default function Dashboard() {
 
     if (!error) {
       reload();
+      alert(error);
+      return;
     }
 
     alert(message);

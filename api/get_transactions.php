@@ -3,6 +3,10 @@ require_once 'config.php';
 
 $userId = isset($_GET['user_id']) ? ($_GET['user_id']) : '';
 
+if (empty($userId)) {
+    jsonResponse(['error' => 'User ID is required'], 400);
+}
+
 try {
     // Get user's transactions, ordered by most recent first
     $stmt = $pdo->prepare("
@@ -28,6 +32,6 @@ try {
     
     jsonResponse($formattedTransactions);
 } catch (PDOException $e) {
-    jsonResponse(['error' => 'Database error: ' . $e->getMessage()], 500);
+    jsonResponse(['error' => 'Database error: ' . $e->getMessage()], 400);
 }
 ?>

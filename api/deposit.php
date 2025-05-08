@@ -64,5 +64,5 @@ try {
 } catch (Exception $e) {
     // Rollback transaction on error
     $pdo->rollBack();
-    jsonResponse(['error' => $e->getMessage()], 500);
+    jsonResponse(['error' => $e->getMessage()], 400);
 }

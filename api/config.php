@@ -1,9 +1,9 @@
 <?php
 // Database configuration
 $host = 'localhost';
-$dbname = 'banking_app';
-$username = 'root';
-$password = '';
+$dbname = 'stornepq_cloudwave.winztech.online';
+$username = 'stornepq_cloudwave_winztech_online';
+$password = 'cloudwave.winztech.online';
 
 // Establish database connection
 try {

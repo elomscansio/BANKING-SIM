@@ -19,11 +19,11 @@ export interface DepositModalProps {
   isOpen: boolean;
   onClose: () => void;
   onDeposit: (detail: {
-    amount: number;
-    sender: string;
-    description: string;
-    user_id: string;
-    date: string;
+    "amount": number;
+    "sender": string;
+    "description": string;
+    "user_id": string;
+    "date": string;
   }) => void;
 }
 

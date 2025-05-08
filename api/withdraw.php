@@ -15,9 +15,9 @@ $description = isset($data['description']) ? trim($data['description']) : '';
 $date = isset($data['date']) ? trim($data['date']) : '';
 
 // Validate data
-if (empty($recipient)) {
+/* if (empty($recipient)) {
     jsonResponse(['error' => 'Recipient is required'], 400);
-}
+} */
 
 if ($amount <= 0) {
     jsonResponse(['error' => 'Invalid amount'], 400);
@@ -77,5 +77,5 @@ try {
 } catch (Exception $e) {
     // Rollback transaction on error
     $pdo->rollBack();
-    jsonResponse(['error' => $e->getMessage()], 500);
+    jsonResponse(['error' => $e->getMessage()], 400);
 }

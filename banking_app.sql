@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `accounts` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `account_number` varchar(20) NOT NULL,
+  `account_number` varchar(20) NOT NULL DEFAULT '1000123456',
   `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -100,10 +100,10 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `first_name`, `last_
 
 --
 -- Indexes for table `accounts`
+/* -- ADD UNIQUE KEY `account_number` (`account_number`), */
 --
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `account_number` (`account_number`),
   ADD KEY `user_id` (`user_id`);
 
 --
@@ -150,14 +150,14 @@ ALTER TABLE `users`
 --
 -- Constraints for table `accounts`
 --
-ALTER TABLE `accounts`
-  ADD CONSTRAINT `accounts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+--ALTER TABLE `accounts`
+--  ADD CONSTRAINT `accounts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `transactions`
 --
-ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+/* ALTER TABLE `transactions`
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`); */
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
