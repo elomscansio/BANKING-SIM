@@ -22,7 +22,10 @@ export default function TransactionList({
   };
 
   return (
-    <div className="space-y-4 rounded-lg p-4 shadow-sm">
+    <div
+      className="space-y-4 rounded-lg p-4 shadow-sm"
+      style={{ backgroundColor: "white" }}
+    >
       {transactions.length === 0 ? (
         <p className="text-center text-gray-500 py-4">No transactions found</p>
       ) : (
