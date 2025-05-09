@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: siteTitle || "v0 App",
   applicationName: siteTitle,
   description: "Created with v0",
+  manifest: "/manifest.json",
   generator: "v0.dev",
   icons: `/180x180.jpeg?v=${version}`,
   appleWebApp: {

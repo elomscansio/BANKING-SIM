@@ -22,7 +22,7 @@ export default function TransactionList({
   };
 
   return (
-    <div className="space-y-4 bg-white rounded-lg p-4 shadow-sm">
+    <div className="space-y-4 rounded-lg p-4 shadow-sm">
       {transactions.length === 0 ? (
         <p className="text-center text-gray-500 py-4">No transactions found</p>
       ) : (
@@ -57,8 +57,11 @@ export default function TransactionList({
                   : "text-red-600"
               }`}
             >
-              {transaction.type === "deposit" ? "+" : "-"}$
-              {transaction.amount.toFixed(2)}
+              {transaction.type === "deposit" ? "+" : "-"}
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(transaction.amount)}
             </div>
           </div>
         ))

@@ -9,9 +9,9 @@ export function generateRandomUID() {
 }
 
 export function useUID() {
-  const [user_id, setUID] = React.useState<string>("");
+  const [user_id, setUID] = React.useState<string>("11111");
 
-  React.useEffect(() => {
+  /* React.useEffect(() => {
     if (typeof window !== "undefined") {
       let stored = window.localStorage.getItem(UID_KEY);
       if (!stored) {
@@ -20,7 +20,7 @@ export function useUID() {
       }
       setUID(stored);
     }
-  }, []);
+  }, []); */
 
   return user_id;
 }

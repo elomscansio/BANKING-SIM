@@ -10,7 +10,12 @@ export default function BalanceCard({ balance }: BalanceCardProps) {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm text-gray-500 mb-1">Available Balance</p>
-          <h2 className="text-3xl font-bold">${balance?.toFixed(2) || 0}</h2>
+          <h2 className="text-3xl font-bold">
+            {new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+            }).format(balance || 0)}
+          </h2>
           <p className="text-sm text-gray-500 mt-1">
             BUSINESS CHECKING ...1421
           </p>

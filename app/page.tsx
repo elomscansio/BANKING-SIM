@@ -11,7 +11,7 @@ import PaymentModal, { PaymentModalProps } from "@/components/payment-modal";
 import { generateRandomUID, useUID } from "@/hooks/use-uid";
 
 export default function Dashboard() {
-  const [balance, setBalance] = useState(1250.75);
+  const [balance, setBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
   const [reloaded, reload] = useReducer((prev) => generateRandomUID(), "");
   const user_id = useUID();
@@ -121,6 +121,7 @@ export default function Dashboard() {
             marginLeft: "-16px",
             marginRight: "-16px",
             borderRadius: "30px 30px 0 0",
+            background: "#f1f1f1",
           }}
         >
           <h2 className="text-lg font-semibold mb-4">Recent Transactions</h2>
